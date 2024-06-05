@@ -4,7 +4,7 @@ const validateUsers = (user) => {
     const addres = ['street', 'suite', 'city', 'zipcode'];
     const geo = ['lat', 'lng'];
     const company = ['name', 'catchPhrase', 'bs'];
-    
+
     for (const field of main) { 
         if (typeof user[field] !== 'string' || user[field] === undefined) {
             return { status: 406, message: `Invalid data format: '${field}' must be a string.` };
@@ -30,7 +30,7 @@ const validateUsers = (user) => {
             return { status: 406, message: `Invalid data format: 'geo.${field}' must be a string.` };
         }
     }
-    
+
     // Company
     if (typeof user.company !== 'object' || user.company === undefined) {
         return { status: 406, message: "Invalid data format: 'company' must be an object." };
@@ -40,7 +40,7 @@ const validateUsers = (user) => {
             return { status: 406, message: `Invalid data format: 'company.${field}' must be a string.` };
         }
     }
-    
+
     // Si todo está bien, devolvemos null indicando que no hay errores
     return null;
 }
@@ -49,26 +49,29 @@ const validateUsers = (user) => {
 export const addUser = async (arg) => {
     let val = validateUsers(arg);
     if (val) { return val; }
-    
+
     const config = {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(arg)
     }
-    let res = await fetch("https://jsonplaceholder.typicode.com/users", config);
+    let res = await fetch("http://172.16.101.146:5804/users", config);
     let data = await res.json();
     return data;
 }
 
-export const getUser = async (arg) => {
-    // Validamos el argumento usando la función validateUsers 
-    let val = validateUsers(arg);
-    // Si la validación devuelve un error, lo retornamos
-    if (val) return val;
+
+export const getUser = async ({ userId }) => {
+
+        
+    let res = await fetch(`http://172.16.101.146:5804/users/${userId}`);
     
     if (res.status === 404) {
         return { status: 404, message: "User not found" };
     }
+
+    let data = await res.json();
+    return data;
 }
 
 
