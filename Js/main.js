@@ -2,17 +2,18 @@ import { addAlbum } from "./module/album.js";
 import { addPost } from "./module/posts.js";
 import { addUser, getUser } from "./module/user.js";
 import { addComment } from "./module/comments.js"; 
+import { addPhoto } from "./module/photos.js";
 
-let postId = parseInt(prompt("Please enter the Post ID "));
-let name = prompt("Please give the name ");
-let email = prompt("Please give the email ");
-let body = prompt("Please entere a short description ");
+let albumId = parseInt(prompt("Please enter the Album Id"));
+let title = prompt("Please give the title ");
+let url = prompt("Please give the url ");
+let thumbnailUrl = prompt("Please enter the thumbnailUrl");
 
-console.table(await addComment ({
+console.table(await addPhoto ({
 
-  "postId": postId,
-  "name": name,
-  "email": email,
-  "body": body
-
+  "albumId": albumId,
+  "title": title,
+  "url": url,
+  "thumbnailUrl": thumbnailUrl
+  
 }))
