@@ -1,5 +1,19 @@
 import { getUser } from "./user.js" 
 
+// GET
+export const getPost = async({postId}) => {
+
+    let res = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+
+    if (!res.ok) {
+        return { status: 404, message: "Post doesn't exist" };
+    }
+
+    let data = await res.json();
+    return data;
+
+}
+
 // VALIDAR DATOS
 const validatePost = async({userId, title, body}) => {
 
