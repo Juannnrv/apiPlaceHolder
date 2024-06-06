@@ -1,7 +1,7 @@
 import { addAlbum, deleteAlbum, getAlbum } from "./module/album.js";
 import { addPost, deletePosts, getPost } from "./module/posts.js";
+import { addComment, getComment, deleteComment } from "./module/comments.js"; 
 import { addUser } from "./module/user.js";
-import { addComment } from "./module/comments.js"; 
 import { addPhoto } from "./module/photos.js";
 import { addTodos } from "./module/todos.js";
 
@@ -58,7 +58,53 @@ let menuAlbums = async() => {
 
   }
 
-  } 
+  }
+  
+  // COMMENTS
+  else if(menu === 2) {
+
+    let menuComments = parseInt(prompt(`
+
+--------- COMMENTS ---------  
+
+  1 - Add Comments 🚀
+  2 - Delete Comments 🚮
+  3 - Search Comments 🔍
+  4 - Back to main menu
+
+  `))
+  
+  if (menuComments === 1) {
+
+    let postId = parseInt(prompt("Please enter the Post ID "));
+    let name = prompt("Please give the name ");
+    let email = prompt("Please give the email ");
+    let body = prompt("Please enter a short description ");
+
+    console.table(await addComment ({
+
+      "postId": postId,
+      "name": name,
+      "email": email,
+      "body": body
+
+    }))
+
+  }
+  else if (menuComments === 2) {
+
+    let CommentId = prompt("Give me the Comment Id you want to delete: ")
+    console.table(await deleteComment(CommentId));
+
+  }
+  else if (menuComments === 3) {
+    
+    let CommentId = prompt("Give me the Comment Id you want to search: ")
+    console.table(await getComment(CommentId));
+
+  }
+
+  }
 
 
 
