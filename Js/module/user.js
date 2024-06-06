@@ -1,4 +1,6 @@
 
+
+// VALIDACIONES
 const validateUsers = (user) => {
     const main = ['name', 'username', 'email', 'phone', 'website'];
     const addres = ['street', 'suite', 'city', 'zipcode'];
@@ -45,7 +47,7 @@ const validateUsers = (user) => {
     return null;
 }
 
-
+// POST
 export const addUser = async (arg) => {
     let val = validateUsers(arg);
     if (val) { return val; }
@@ -60,8 +62,8 @@ export const addUser = async (arg) => {
     return data;
 }
 
-
-export const getUser = async ({ userId }) => {
+// GET 
+export const getUser = async (userId) => {
 
         
     let res = await fetch(`http://172.16.101.146:5804/users/${userId}`);
@@ -74,4 +76,36 @@ export const getUser = async ({ userId }) => {
     return data;
 }
 
+// DELETE
+export const validateDeleteUser = async({id}) => {
+
+    if (typeof id !== "string" || id === undefined) {
+        return { status: 406, message: "Invalid data format: 'Userid' must be a string"}
+    }
+    
+}
+
+export const deleteUser = async (arg) => {
+    
+    alert(typeof arg)
+    let val = await validateDeleteUser(arg);
+    if (val) { return val; }
+
+    let config = {
+
+        method: "DELETE",
+        headers: { "content-type": "application/json" }
+
+    }
+
+    let res = await fetch(`http://172.16.101.146:5804/users/${arg.id}`, config)
+    if (res.status === 404) {
+        return { status: 404, message: "User not found" };
+    }
+
+    let data = await res.json()
+    data.status = 202
+    data.message = `The User ${arg.id} was deleted successfully`
+    return data;
+}
 
