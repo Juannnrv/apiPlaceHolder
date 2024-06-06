@@ -1,20 +1,63 @@
-import { addAlbum } from "./module/album.js";
+import { addAlbum, deleteAlbum, getAlbum } from "./module/album.js";
 import { addPost } from "./module/posts.js";
 import { addUser } from "./module/user.js";
 import { addComment } from "./module/comments.js"; 
 import { addPhoto } from "./module/photos.js";
 import { addTodos } from "./module/todos.js";
 
-let userId = parseInt(prompt("Please enter the User Id"));
-let title = prompt("Please give the title ");
-let completedInput = prompt("Please give the completed status (true/false)");
+let menuAlbums = async() => {
 
-let completed = (completedInput.toLowerCase() === 'true');
+  let menu = parseInt(prompt(`
 
-console.table(await addTodos ({
+-------- MODULES --------  
 
-  "userId": userId,
-  "title": title,
-  "completed": completed
+  1 - Posts
+  2 - Comments
+  3 - Albums
+  4 - Photos
+  5 - Users
 
-}))
+  `))
+
+  if(menu === 3) {
+
+    let menuAlbum = parseInt(prompt(`
+
+--------- ALBUMS ---------  
+
+  1 - Add Album
+  2 - Delete Album
+  3 - Search ALbum
+  4 - Back to main menu
+
+  `))
+  
+  if (menuAlbum === 1) {
+
+    let user = parseInt(prompt("Give me the user number"))
+    let title = prompt("Give me the album title" )
+
+    console.table(await addAlbum({
+
+      "userId": user,
+      "title": title
+
+    }));
+
+  }
+  else if (menuAlbum === 2) {
+
+    let albumId = prompt("Give me the Album Id you want to delete: ")
+    console.table(await deleteAlbum(albumId));
+
+  }
+  else if (menuAlbum === 3) {
+    let albumId = prompt("Give me the Album Id you want to search: ")
+    console.table(await getAlbum(albumId));
+  }
+
+  }
+
+}
+
+menuAlbums();
