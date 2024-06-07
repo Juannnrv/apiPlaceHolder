@@ -1,5 +1,5 @@
 import { addAlbum, deleteAlbum, getAlbum, updateAlbum } from "./module/album.js";
-import { addPost, deletePost, getPost } from "./module/posts.js";
+import { addPost, deletePost, getPost, updatePost } from "./module/posts.js";
 import { addComment, getComment, deleteComment } from "./module/comments.js"; 
 import { addPhoto, deletePhoto, getPhoto } from "./module/photos.js";
 import { addUser, deleteUser, getUser } from "./module/user.js";
@@ -31,7 +31,8 @@ do {let menuAlbums = async() => {
   1 - Add Posts 🚀
   2 - Delete Posts 🚮
   3 - Search Posts 🔍
-  4 - Back to main menu
+  4 - Update Posts
+  5 - Back to main menu
 
   `))
   if (menuPosts === 1) {
@@ -62,6 +63,13 @@ do {let menuAlbums = async() => {
 
   }
   else if (menuPosts === 4) {
+
+    continuar = false;
+    let id = prompt("Give me the Post Id you want to update.");
+    updatePost(id);
+
+  }
+  else if (menuPosts === 5) {
 
     continuar = false;
 
@@ -165,8 +173,8 @@ do {let menuAlbums = async() => {
   else if (menuAlbum === 4 ) {
 
     continuar = false;
-    let id = prompt("Ingrese el ID del álbum que desea modificar.");
-    console.table(updateAlbum(id));
+    let id = prompt("Give me the Album Id you want to update.");
+    updateAlbum(id);
 
   }
   else if (menuAlbum === 5) {

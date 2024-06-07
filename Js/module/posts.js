@@ -1,11 +1,11 @@
 import { getUser } from "./user.js" 
 
 // GET
-export const getPost = async({postId}) => {
+export const getPost = async(postId) => {
 
     let res = await fetch(`http://172.16.101.146:5800/posts/${postId}`)
 
-    if (!res.ok) {
+    if (res.status === 404) {
         return { status: 404, message: "Post doesn't exist" };
     }
 
@@ -84,4 +84,46 @@ export const deletePost = async (arg) => {
     data.message = `The Post ${arg.id} was deleted successfully from the database`;
     return data;
 
+}
+
+// PUT 
+export const updatePost = async(id) => {
+
+    let post = await getPost(id);
+    if (post.status == 204) return "Post not found";
+
+    const key = Object.keys(post).filter(key => key !== "id");
+    let opciones = key.map((key, value) => `${value + 1}. ${key}`).join("\n");
+
+    let opc = prompt(`Available options: \n${opciones}\n Give me the option:`);
+    
+    let newKey = key[opc - 1];
+    if (!newKey) return "Unavailable option";
+
+    if (newKey === "userId") {
+
+        let newUserId = prompt(`Please enter a new value for ${newKey}`);
+        let user = await getUser(newUserId);
+
+        if (user.status === 404) {
+            alert("The User doesn't exist")
+        }
+
+    }
+
+    let newvalue = prompt(`Please enter a new value for ${newKey}`);
+    post[newKey] = newvalue;
+
+    let config = {
+
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(post)
+
+    }
+
+    let res = await fetch(`http://172.16.101.146:5800/posts/${id}`, config);
+    let data = await res.json();
+    alert("Post value updated succesfully");
+    return data;
 }
