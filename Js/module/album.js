@@ -50,39 +50,59 @@ export const getAlbum = async(albumId) => {
 }
 
 // PUT
-export const updateAlbum = async (albumId, key, value) => {
-    if (typeof value !== "string" || value === undefined) {
-        return { status: 406, message: "Invalid data format: value must be a string"};
+export const updateAlbum = async (id) => {
+    
+    // Verificar la existencia del álbum con el ID proporcionado
+    let album = await getAlbum(id);
+    
+    // Si el álbum no se encuentra, devolver un mensaje
+    if (album.status == 204) return "Álbum not found";
+    
+    // Crear una lista de opciones disponibles para modificar
+    const keys = Object.keys(album).filter(key => key !== 'id');
+    let opciones = keys.map((key, value) => `${value + 1}. ${key}`).join('\n');
+    
+    // Pedir al usuario que elija una opción para modificar
+    let opc = prompt(`Available options: \n${opciones}\n Give me the option:`);
+    
+    let newKey = keys[opc - 1];
+    // Si la opción no es válida, devolver un mensaje
+    if (!newKey) return "Unavailable option";
+    
+    // Si el usuario selecciona cambiar el userId
+    if (newKey === 'userId') {
+        // Pedir al usuario el nuevo valor para userId
+        let newUserId = prompt(`Please enter a new value for ${newKey}`);
+        
+        // Validar si el nuevo userId existe en los datos de usuario
+        let user = await getUser(newUserId);
+        
+        // Si el usuario no existe, mostrar un mensaje de error
+        if (user.status === 404) {
+            alert("The User doesn't exist");
+        }
     }
 
-    let existingAlbum = await getAlbum(albumId);
-    if (existingAlbum.status === 404) {
-        return { status: 404, message: "Album not found." };
-    }
+    // Pedir al usuario que ingrese el nuevo valor para la llave seleccionada
+    let newvalue = prompt(`Please enter a new value for ${newKey}`);
+    // Actualizar el valor del álbum seleccionado
+    album[newKey] = newvalue;
 
-    let updateData = {};
-    if (key === "title") {
-        updateData.title = value;
-    }
-    else if (key === "userId") {
-        updateData.userId = value;
-    }
-
+    // Configuración para la solicitud PUT
     let config = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updateData)
-    }
-
-    let res = await fetch(`http://172.16.101.146:5802/albums/${albumId}`, config);
+        body: JSON.stringify(album)
+    };
     
-    if (res.status === 200) {
-        let data = await res.json();
-        return { status: 200, message: "Album updated successfully.", ...data };
-    } else {
-        return { status: res.status, message: "Failed to update album." };
-    }
-}
+    // Realizar la solicitud PUT para actualizar el álbum
+    let res = await fetch(`https://53977d67df4867e88ad92ace77f41d81.serveo.net/albums/${id}`, config);
+    let data = await res.json();
+    alert("Album value updated succesfully")
+    return data;
+};
+
+
 
 
 // DELETE 
@@ -117,4 +137,6 @@ export const deleteAlbum = async(arg) => {
     return data;
 
 }
+
+
 

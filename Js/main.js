@@ -1,4 +1,4 @@
-import { addAlbum, deleteAlbum, getAlbum } from "./module/album.js";
+import { addAlbum, deleteAlbum, getAlbum, updateAlbum } from "./module/album.js";
 import { addPost, deletePost, getPost } from "./module/posts.js";
 import { addComment, getComment, deleteComment } from "./module/comments.js"; 
 import { addPhoto, deletePhoto, getPhoto } from "./module/photos.js";
@@ -131,7 +131,8 @@ do {let menuAlbums = async() => {
   1 - Add Album 🚀
   2 - Delete Album 🚮
   3 - Search ALbum 🔍
-  4 - Back to main menu
+  4 - Update Album
+  5 - Back to main menu
 
   `))
   
@@ -156,11 +157,19 @@ do {let menuAlbums = async() => {
   }
   else if (menuAlbum === 3) {
     
+    continuar = false;
     let albumId = prompt("Give me the Album Id you want to search: ")
     console.table(await getAlbum(albumId));
 
   }
-  else if (menuPosts === 4) {
+  else if (menuAlbum === 4 ) {
+
+    continuar = false;
+    let id = prompt("Ingrese el ID del álbum que desea modificar.");
+    console.table(updateAlbum(id));
+
+  }
+  else if (menuAlbum === 5) {
 
     continuar = false;
 
