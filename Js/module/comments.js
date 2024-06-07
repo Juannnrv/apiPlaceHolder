@@ -90,3 +90,34 @@ export const deleteComment = async(commentId) => {
     return data;
 
 }
+
+// PUT 
+export const updateComment = async(id) => {
+
+    let comment = await getComment(id);
+    if (comment.status == 204) return "Comment not found";
+
+    const key = Object.keys(comment).filter(key => key !== "id");
+    let opciones = key.map((key, value) => `${value + 1}. ${key}`).join("\n");
+
+    let opc = prompt(`Available options: \n${opciones}\n  Give me the option:`);
+    
+    let newKey = key[opc - 1];
+    if (!newKey) return "Unavailable option";
+
+    let newvalue = prompt(`Please enter a new value for ${newKey}`);
+    comment[newKey] = newvalue;
+
+    let config = {
+
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(comment)
+
+    }
+
+    let res = await fetch(`http://172.16.101.146:5801/Comments/${id}`, config);
+    let data = await res.json();
+    alert("Comment value updated succesfully");
+    return data;
+}
