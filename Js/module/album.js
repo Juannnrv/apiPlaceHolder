@@ -49,6 +49,41 @@ export const getAlbum = async(albumId) => {
 
 }
 
+// PUT
+export const updateAlbum = async (albumId, key, value) => {
+    if (typeof value !== "string" || value === undefined) {
+        return { status: 406, message: "Invalid data format: value must be a string"};
+    }
+
+    let existingAlbum = await getAlbum(albumId);
+    if (existingAlbum.status === 404) {
+        return { status: 404, message: "Album not found." };
+    }
+
+    let updateData = {};
+    if (key === "title") {
+        updateData.title = value;
+    }
+    else if (key === "userId") {
+        updateData.userId = value;
+    }
+
+    let config = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData)
+    }
+
+    let res = await fetch(`http://172.16.101.146:5802/albums/${albumId}`, config);
+    
+    if (res.status === 200) {
+        let data = await res.json();
+        return { status: 200, message: "Album updated successfully.", ...data };
+    } else {
+        return { status: res.status, message: "Failed to update album." };
+    }
+}
+
 
 // DELETE 
 const validateDeleteAlbum = async({id}) => {
