@@ -1,8 +1,8 @@
 import { addAlbum, deleteAlbum, getAlbum, updateAlbum } from "./module/album.js";
 import { addPost, deletePost, getPost, updatePost } from "./module/posts.js";
-import { addComment, getComment, deleteComment } from "./module/comments.js"; 
-import { addPhoto, deletePhoto, getPhoto } from "./module/photos.js";
-import { addUser, deleteUser, getUser } from "./module/user.js";
+import { addComment, getComment, deleteComment, updateComment } from "./module/comments.js"; 
+import { addPhoto, deletePhoto, getPhoto, updatePhoto } from "./module/photos.js";
+import { addUser, deleteUser, getUser, updateUser } from "./module/user.js";
 
 let continuar = true;
 
@@ -31,12 +31,13 @@ do {let menuAlbums = async() => {
   1 - Add Posts 🚀
   2 - Delete Posts 🚮
   3 - Search Posts 🔍
-  4 - Update Posts
+  4 - Update Posts ✅
   5 - Back to main menu
 
   `))
   if (menuPosts === 1) {
 
+    continuar = false;
     let user = parseInt(prompt("Give me the user number"))
     let title = prompt("Give me the album title" )
     let body = prompt("Give me the short post description")
@@ -52,12 +53,14 @@ do {let menuAlbums = async() => {
   }
   else if (menuPosts === 2) {
 
+    continuar = false;
     let postId = prompt("Give me the Post Id you want to delete: ");
     console.table(await deletePost({ id: postId }));
 
   }
   else if (menuPosts === 3) {
 
+    continuar = false;
     let postId = prompt("Give me the Photo Id you want to search: ")
     console.table(await getPost(postId));
 
@@ -87,12 +90,14 @@ do {let menuAlbums = async() => {
   1 - Add Comments 🚀
   2 - Delete Comments 🚮
   3 - Search Comments 🔍
-  4 - Back to main menu
+  4 - Update Comments ✅
+  5 - Back to main menu
 
   `))
   
   if (menuComments === 1) {
 
+    continuar = false;
     let postId = parseInt(prompt("Please enter the Post ID "));
     let name = prompt("Please give the name ");
     let email = prompt("Please give the email ");
@@ -110,17 +115,26 @@ do {let menuAlbums = async() => {
   }
   else if (menuComments === 2) {
 
+    continuar = false;
     let CommentId = prompt("Give me the Comment Id you want to delete: ");
     console.table(await deleteComment({ id: CommentId }));
 
   }
   else if (menuComments === 3) {
     
+    continuar = false;
     let CommentId = prompt("Give me the Comment Id you want to search: ")
     console.table(await getComment(CommentId));
 
   }
-  else if (menuPosts === 4) {
+  else if (menuComments === 4) {
+
+    continuar = false;
+    let id = prompt("Give the Comment Id you want to update: ")
+    updateComment(id);
+
+  }
+  else if (menuComments === 5) {
 
     continuar = false;
 
@@ -139,13 +153,14 @@ do {let menuAlbums = async() => {
   1 - Add Album 🚀
   2 - Delete Album 🚮
   3 - Search ALbum 🔍
-  4 - Update Album
+  4 - Update Album ✅
   5 - Back to main menu
 
   `))
   
   if (menuAlbum === 1) {
-
+    
+    continuar = false;
     let user = parseInt(prompt("Give me the user number"))
     let title = prompt("Give me the album title" )
 
@@ -159,6 +174,7 @@ do {let menuAlbums = async() => {
   }
   else if (menuAlbum === 2) {
 
+    continuar = false;
     let AlbumId = prompt("Give me the Album Id you want to delete: ");
     console.table(await deleteAlbum({ id: AlbumId }));
 
@@ -196,12 +212,14 @@ do {let menuAlbums = async() => {
   1 - Add Photos 🚀
   2 - Delete Photos 🚮
   3 - Search Photos 🔍
-  4 - Back to main menu
+  4 - Update Photos ✅
+  5 - Back to main menu
 
   `))
   
   if (menuPhotos === 1) {
 
+    continuar = false;
     let albumId = parseInt(prompt("Please enter the Album Id"));
     let title = prompt("Please give the title ");
     let url = prompt("Please give the url ");
@@ -219,6 +237,7 @@ do {let menuAlbums = async() => {
   }
   else if (menuPhotos === 2) {
 
+    continuar = false;
     let photoId = prompt("Give me the Photo Id you want to delete: ");
     console.table(await deletePhoto({ id: photoId }));
 
@@ -226,11 +245,19 @@ do {let menuAlbums = async() => {
   }
   else if (menuPhotos === 3) {
     
+    continuar = false;
     let photoId = prompt("Give me the Photo Id you want to search: ")
     console.table(await getPhoto(photoId));
 
   }
-  else if (menuPosts === 4) {
+  else if (menuPhotos === 4){
+
+    continuar = false;
+    let id = prompt("Give me the Photo Id you want to update ")
+    updatePhoto(id);
+
+  }
+  else if (menuPhotos === 5) {
 
     continuar = false;
 
@@ -249,12 +276,14 @@ do {let menuAlbums = async() => {
   1 - Add Users 🚀
   2 - Delete Users 🚮
   3 - Search Users 🔍
-  4 - Back to main menu
+  4 - Update Users ✅
+  5 - Back to main menu
 
   `))
   
   if (menuUsers === 1) {
 
+    continuar = false;
     let name = prompt("Please enter the name ");
     let username = prompt("Please give the user name ");
     let email = prompt("Please give the email ");
@@ -304,6 +333,7 @@ do {let menuAlbums = async() => {
   }
   else if (menuUsers === 2) {
 
+    continuar = false;
     let UserId = prompt("Give me the User Id you want to delete: ");
     console.table(await deleteUser({ id: UserId }));
 
@@ -311,11 +341,19 @@ do {let menuAlbums = async() => {
   }
   else if (menuUsers === 3) {
     
+    continuar = false;
     let UserId = prompt("Give me the User Id you want to search: ")
     console.table(await getUser(UserId));
 
   }
-  else if (menuPosts === 4) {
+  else if (menuUsers === 4) {
+
+    continuar = false;
+    let id = prompt("Give me the User Id you want to update: ")
+    updateUser(id);
+
+  }
+  else if (menuUsers === 5) {
 
     continuar = false;
 
