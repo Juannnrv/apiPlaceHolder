@@ -22,7 +22,7 @@ const validatePhoto = async(photo, albumId) => {
     }
 }
 
-// POST 
+// POST
 export const addPhoto = async(arg) => {
     
     let val = await validatePhoto(arg, arg.albumId);
@@ -85,4 +85,35 @@ export const deletePhoto = async(arg) => {
     data.message = `The photo ${arg.id} was deleted successfully`
     return data;
 
+}
+
+// PUT 
+export const updatePhoto = async(id) => {
+
+    let photo = await getPhoto(id);
+    if (photo.status == 204) return "Photo not found";
+
+    const key = Object.keys(photo).filter(key => key !== "id");
+    let opciones = key.map((key, value) => `${value + 1}. ${key}`).join("\n");
+
+    let opc = prompt(`Available options: \n${opciones}\n  Give me the option:`);
+    
+    let newKey = key[opc - 1];
+    if (!newKey) return "Unavailable option";
+
+    let newvalue = prompt(`Please enter a new value for ${newKey}`);
+    photo[newKey] = newvalue;
+
+    let config = {
+
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(photo)
+
+    }
+
+    let res = await fetch(`http://172.16.101.146:5803/photos/${id}`, config);
+    let data = await res.json();
+    alert("Photo value updated succesfully");
+    return data;
 }
