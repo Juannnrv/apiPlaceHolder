@@ -6,371 +6,225 @@ import { addUser, deleteUser, getUser, updateUser } from "./module/user.js";
 
 let continuar = true;
 
-do {let menuAlbums = async() => {
-
-  let menu = parseInt(prompt(`
-
+const menu = async () => {
+    let menu = parseInt(prompt(`
 -------- MODULES --------  
+    1 - Posts 📬
+    2 - Comments 📋
+    3 - Albums 📚
+    4 - Photos 🖼️
+    5 - Users 👪
+    6 - Exit 👋
+    `));
 
-  1 - Posts 📬
-  2 - Comments 📋
-  3 - Albums 📚
-  4 - Photos 🖼️
-  5 - Users 👪
-  6 - Exit 👋
+    if (menu === 1) {
+        await handlePosts();
+    } else if (menu === 2) {
+        await handleComments();
+    } else if (menu === 3) {
+        await handleAlbums();
+    } else if (menu === 4) {
+        await handlePhotos();
+    } else if (menu === 5) {
+        await handleUsers();
+    } else if (menu === 6) {
+        continuar = false;
+    } else {
+        console.log("Invalid option. Please select a valid option.");
+    }
+};
 
-  `))
-
-  // POSTS
-  if (menu === 1) {
-
+const handlePosts = async () => {
     let menuPosts = parseInt(prompt(`
-
 --------- POSTS ---------  
+    1 - Add Posts 🚀
+    2 - Delete Posts 🚮
+    3 - Search Posts 🔍
+    4 - Update Posts ✅
+    5 - Back to main menu
+    `));
 
-  1 - Add Posts 🚀
-  2 - Delete Posts 🚮
-  3 - Search Posts 🔍
-  4 - Update Posts ✅
-  5 - Back to main menu
+    if (menuPosts === 1) {
+        let user = parseInt(prompt("Give me the user number"));
+        let title = prompt("Give me the album title");
+        let body = prompt("Give me the short post description");
+        console.table(await addPost({ "userId": user, "title": title, "body": body }));
+    } else if (menuPosts === 2) {
+        let postId = prompt("Give me the Post Id you want to delete: ");
+        console.table(await deletePost({ id: postId }));
+    } else if (menuPosts === 3) {
+        let postId = prompt("Give me the Post Id you want to search: ");
+        console.table(await getPost(postId));
+    } else if (menuPosts === 4) {
+        let id = prompt("Give me the Post Id you want to update.");
+        await updatePost(id);
+    } else if (menuPosts === 5) {
+        return; 
+    } else {
+        console.log("Invalid option. Please select a valid option.");
+    }
+};
 
-  `))
-  if (menuPosts === 1) {
-
-    continuar = false;
-    let user = parseInt(prompt("Give me the user number"))
-    let title = prompt("Give me the album title" )
-    let body = prompt("Give me the short post description")
-
-    console.table( await addPost({
-
-      "userId": user,
-      "title": title,
-      "body": body
-
-    }) )
-
-  }
-  else if (menuPosts === 2) {
-
-    continuar = false;
-    let postId = prompt("Give me the Post Id you want to delete: ");
-    console.table(await deletePost({ id: postId }));
-
-  }
-  else if (menuPosts === 3) {
-
-    continuar = false;
-    let postId = prompt("Give me the Photo Id you want to search: ")
-    console.table(await getPost(postId));
-
-  }
-  else if (menuPosts === 4) {
-
-    continuar = false;
-    let id = prompt("Give me the Post Id you want to update.");
-    updatePost(id);
-
-  }
-  else if (menuPosts === 5) {
-
-    continuar = false;
-
-  }
-
-  }
-  
-  // COMMENTS
-  else if(menu === 2) {
-
+const handleComments = async () => {
     let menuComments = parseInt(prompt(`
-
 --------- COMMENTS ---------  
+    1 - Add Comments 🚀
+    2 - Delete Comments 🚮
+    3 - Search Comments 🔍
+    4 - Update Comments ✅
+    5 - Back to main menu
+    `));
 
-  1 - Add Comments 🚀
-  2 - Delete Comments 🚮
-  3 - Search Comments 🔍
-  4 - Update Comments ✅
-  5 - Back to main menu
+    if (menuComments === 1) {
+        let postId = parseInt(prompt("Please enter the Post ID "));
+        let name = prompt("Please give the name ");
+        let email = prompt("Please give the email ");
+        let body = prompt("Please enter a short description ");
+        console.table(await addComment({ "postId": postId, "name": name, "email": email, "body": body }));
+    } else if (menuComments === 2) {
+        let commentId = prompt("Give me the Comment Id you want to delete: ");
+        console.table(await deleteComment( commentId ));
+    } else if (menuComments === 3) {
+        let commentId = prompt("Give me the Comment Id you want to search: ");
+        console.table(await getComment(commentId));
+    } else if (menuComments === 4) {
+        let id = prompt("Give the Comment Id you want to update: ");
+        await updateComment(id);
+    } else if (menuComments === 5) {
+        return; 
+    } else {
+        console.log("Invalid option. Please select a valid option.");
+    }
+};
 
-  `))
-  
-  if (menuComments === 1) {
-
-    continuar = false;
-    let postId = parseInt(prompt("Please enter the Post ID "));
-    let name = prompt("Please give the name ");
-    let email = prompt("Please give the email ");
-    let body = prompt("Please enter a short description ");
-
-    console.table(await addComment ({
-
-      "postId": postId,
-      "name": name,
-      "email": email,
-      "body": body
-
-    }))
-
-  }
-  else if (menuComments === 2) {
-
-    continuar = false;
-    let CommentId = prompt("Give me the Comment Id you want to delete: ");
-    console.table(await deleteComment({ id: CommentId }));
-
-  }
-  else if (menuComments === 3) {
-    
-    continuar = false;
-    let CommentId = prompt("Give me the Comment Id you want to search: ")
-    console.table(await getComment(CommentId));
-
-  }
-  else if (menuComments === 4) {
-
-    continuar = false;
-    let id = prompt("Give the Comment Id you want to update: ")
-    updateComment(id);
-
-  }
-  else if (menuComments === 5) {
-
-    continuar = false;
-
-  }
-
-
-  }
-
-  // ALBUMS
-  else if(menu === 3) {
-
+const handleAlbums = async () => {
     let menuAlbum = parseInt(prompt(`
-
 --------- ALBUMS ---------  
+    1 - Add Album 🚀
+    2 - Delete Album 🚮
+    3 - Search Album 🔍
+    4 - Update Album ✅
+    5 - Back to main menu
+    `));
 
-  1 - Add Album 🚀
-  2 - Delete Album 🚮
-  3 - Search ALbum 🔍
-  4 - Update Album ✅
-  5 - Back to main menu
+    if (menuAlbum === 1) {
+        let user = parseInt(prompt("Give me the user number"));
+        let title = prompt("Give me the album title");
+        console.table(await addAlbum({ "userId": user, "title": title }));
+    } else if (menuAlbum === 2) {
+        let albumId = prompt("Give me the Album Id you want to delete: ");
+        console.table(await deleteAlbum({ id: albumId }));
+    } else if (menuAlbum === 3) {
+        let albumId = prompt("Give me the Album Id you want to search: ");
+        console.table(await getAlbum(albumId));
+    } else if (menuAlbum === 4) {
+        let id = prompt("Give me the Album Id you want to update.");
+        await updateAlbum(id);
+    } else if (menuAlbum === 5) {
+        return; 
+    } else {
+        console.log("Invalid option. Please select a valid option.");
+    }
+};
 
-  `))
-  
-  if (menuAlbum === 1) {
-    
-    continuar = false;
-    let user = parseInt(prompt("Give me the user number"))
-    let title = prompt("Give me the album title" )
-
-    console.table(await addAlbum({
-
-      "userId": user,
-      "title": title
-
-    }));
-
-  }
-  else if (menuAlbum === 2) {
-
-    continuar = false;
-    let AlbumId = prompt("Give me the Album Id you want to delete: ");
-    console.table(await deleteAlbum({ id: AlbumId }));
-
-  }
-  else if (menuAlbum === 3) {
-    
-    continuar = false;
-    let albumId = prompt("Give me the Album Id you want to search: ")
-    console.table(await getAlbum(albumId));
-
-  }
-  else if (menuAlbum === 4 ) {
-
-    continuar = false;
-    let id = prompt("Give me the Album Id you want to update.");
-    updateAlbum(id);
-
-  }
-  else if (menuAlbum === 5) {
-
-    continuar = false;
-
-  }
-
-
-  }
-
-  // PHOTOS
-  else if(menu === 4) {
-
+const handlePhotos = async () => {
     let menuPhotos = parseInt(prompt(`
-
 --------- PHOTOS ---------  
+    1 - Add Photos 🚀
+    2 - Delete Photos 🚮
+    3 - Search Photos 🔍
+    4 - Update Photos ✅
+    5 - Back to main menu
+    `));
 
-  1 - Add Photos 🚀
-  2 - Delete Photos 🚮
-  3 - Search Photos 🔍
-  4 - Update Photos ✅
-  5 - Back to main menu
+    if (menuPhotos === 1) {
+        let albumId = parseInt(prompt("Please enter the Album Id"));
+        let title = prompt("Please give the title ");
+        let url = prompt("Please give the url ");
+        let thumbnailUrl = prompt("Please enter the thumbnailUrl");
+        console.table(await addPhoto({ "albumId": albumId, "title": title, "url": url, "thumbnailUrl": thumbnailUrl }));
+    } else if (menuPhotos === 2) {
+        let photoId = prompt("Give me the Photo Id you want to delete: ");
+        console.table(await deletePhoto({ id: photoId }));
+    } else if (menuPhotos === 3) {
+        let photoId = prompt("Give me the Photo Id you want to search: ");
+        console.table(await getPhoto(photoId));
+    } else if (menuPhotos === 4) {
+        let id = prompt("Give me the Photo Id you want to update ");
+        await updatePhoto(id);
+    } else if (menuPhotos === 5) {
+        return; 
+    } else {
+        console.log("Invalid option. Please select a valid option.");
+    }
+};
 
-  `))
-  
-  if (menuPhotos === 1) {
-
-    continuar = false;
-    let albumId = parseInt(prompt("Please enter the Album Id"));
-    let title = prompt("Please give the title ");
-    let url = prompt("Please give the url ");
-    let thumbnailUrl = prompt("Please enter the thumbnailUrl");
-
-    console.table(await addPhoto ({
-
-      "albumId": albumId,
-      "title": title,
-      "url": url,
-      "thumbnailUrl": thumbnailUrl
-
-    }))
-
-  }
-  else if (menuPhotos === 2) {
-
-    continuar = false;
-    let photoId = prompt("Give me the Photo Id you want to delete: ");
-    console.table(await deletePhoto({ id: photoId }));
-
-
-  }
-  else if (menuPhotos === 3) {
-    
-    continuar = false;
-    let photoId = prompt("Give me the Photo Id you want to search: ")
-    console.table(await getPhoto(photoId));
-
-  }
-  else if (menuPhotos === 4){
-
-    continuar = false;
-    let id = prompt("Give me the Photo Id you want to update ")
-    updatePhoto(id);
-
-  }
-  else if (menuPhotos === 5) {
-
-    continuar = false;
-
-  }
-
-
-  }
-
-  // USERS
-  else if(menu === 5) {
-
+const handleUsers = async () => {
     let menuUsers = parseInt(prompt(`
+--------- USERS ---------  
+    1 - Add Users 🚀
+    2 - Delete Users 🚮
+    3 - Search Users 🔍
+    4 - Update Users ✅
+    5 - Back to main menu
+    `));
 
---------- PHOTOS ---------  
+    if (menuUsers === 1) {
+        let name = prompt("Please enter the name ");
+        let username = prompt("Please give the user name ");
+        let email = prompt("Please give the email ");
+        let street = prompt("Please give the street name ");
+        let suite = prompt("Please enter the suite number ");
+        let city = prompt("Please give the city name ");
+        let zipcode = prompt("Please enter the zipcode ");
+        let lat = prompt("Please give the latitude ");
+        let lng = prompt("Please enter the longitude ");
+        let phone = prompt("Please give the phone number ");
+        let website = prompt("Please enter the website URL ");
+        let namecompany = prompt("Please enter the company name ");
+        let catchPhrase = prompt("Please give the catch phrase ");
+        let bs = prompt("Please enter the business strategy ");
 
-  1 - Add Users 🚀
-  2 - Delete Users 🚮
-  3 - Search Users 🔍
-  4 - Update Users ✅
-  5 - Back to main menu
+        console.table(await addUser({
+            "name": name,
+            "username": username,
+            "email": email,
+            "address": {
+                "street": street,
+                "suite": suite,
+                "city": city,
+                "zipcode": zipcode,
+                "geo": { 
+                    "lat": lat, 
+                    "lng": lng 
+                }
+            },
+            "phone": phone,
+            "website": website,
+            "company": { 
+                "name": namecompany, 
+                "catchPhrase": catchPhrase, 
+                "bs": bs 
+            }
+        }));
+    } else if (menuUsers === 2) {
+        let userId = prompt("Give me the User Id you want to delete: ");
+        console.table(await deleteUser({ id: userId }));
+    } else if (menuUsers === 3) {
+        let userId = prompt("Give me the User Id you want to search: ");
+        console.table(await getUser(userId));
+    } else if (menuUsers === 4) {
+        let id = prompt("Give me the User Id you want to update: ");
+        await updateUser(id);
+    } else if (menuUsers === 5) {
+        return; 
+    } else {
+        console.log("Invalid option. Please select a valid option.");
+    }
+};
 
-  `))
-  
-  if (menuUsers === 1) {
-
-    continuar = false;
-    let name = prompt("Please enter the name ");
-    let username = prompt("Please give the user name ");
-    let email = prompt("Please give the email ");
-
-    let street = prompt("Please give the street name ");
-    let suite = prompt("Please enter the suite number ");
-    let city = prompt("Please give the city name ");
-    let zipcode = prompt("Please enter the zipcode ");
-
-    let lat = prompt("Please give the latitude ");
-    let lng = prompt("Please enter the longitude ");
-
-    let phone = prompt("Please give the phone number ");
-    let website = prompt("Please enter the website URL ");
-
-    let namecompany = prompt("Please enter the company name ");
-    let catchPhrase = prompt("Please give the catch phrase ");
-    let bs = prompt("Please enter the business strategy ");
-
-
-
-    console.table(await addUser ({
-
-        "name": name,
-        "username": username,
-        "email": email,
-        "address": {
-          "street": street,
-          "suite": suite,
-          "city": city,
-          "zipcode": zipcode,
-          "geo": {
-            "lat": lat,
-            "lng": lng
-          }
-        },
-        "phone": phone,
-        "website": website,
-        "company": {
-          "name": namecompany,
-          "catchPhrase": catchPhrase,
-          "bs": bs
-        }
-
-      }))
-
-  }
-  else if (menuUsers === 2) {
-
-    continuar = false;
-    let UserId = prompt("Give me the User Id you want to delete: ");
-    console.table(await deleteUser({ id: UserId }));
-
-
-  }
-  else if (menuUsers === 3) {
-    
-    continuar = false;
-    let UserId = prompt("Give me the User Id you want to search: ")
-    console.table(await getUser(UserId));
-
-  }
-  else if (menuUsers === 4) {
-
-    continuar = false;
-    let id = prompt("Give me the User Id you want to update: ")
-    updateUser(id);
-
-  }
-  else if (menuUsers === 5) {
-
-    continuar = false;
-
-  }
-
-
-  }
-
-  // EXIT
-  else if (menu === 6) {
-
-    continuar = false;
-
-  }
-
-}
-
-menuAlbums();
-
-}while (continuar);
+(async () => {
+    while (continuar) {
+        await menu();
+    }
+})();
